@@ -452,7 +452,8 @@ function generateTable(categoryData) {
       <td>${item.city}</td>
       <td>${item.state}</td>
       <td>${item.status}</td>
-      <td>${item.notes}</td>`;
+      <td>${item.notes}</td>
+    </tr>`;
   });
   
   tableHTML += `</tbody></table>`;
@@ -490,7 +491,7 @@ submitLoginButton.addEventListener('click', () => {
 
 // Event Listener for Add Spot Button
 addSpotButton.addEventListener('click', () => {
-  const category = categorySelect.value;
+  const category = document.getElementById("categorySelect").value;
   const spot = spotInput.value;
   if (category && spot) {
     addSpot(category, spot);
@@ -504,4 +505,41 @@ addSpotButton.addEventListener('click', () => {
 function addSpot(category, spot) {
   let spots = JSON.parse(localStorage.getItem('spots')) || {};
   if (!spots[category]) {
-    spots[category] =
+    spots[category] = [];
+  }
+  spots[category].push(spot);
+  localStorage.setItem('spots', JSON.stringify(spots));
+  loadSpots();
+}
+
+// Function to Load Spots from Local Storage
+function loadSpots() {
+  let spots = JSON.parse(localStorage.getItem('spots')) || {};
+  tableContainer.innerHTML = '';
+  // Combine data from both the hardcoded data and local storage
+  let combinedData = { ...data };
+  for (let category in spots) {
+    if (!combinedData[category]) {
+      combinedData[category] = [];
+    }
+    combinedData[category] = combinedData[category].concat(spots[category]);
+  }
+  for (let category in combinedData) {
+    let table = document.createElement('table');
+    table.className = 'table';
+    let thead = document.createElement('thead');
+    thead.innerHTML = `<tr><th>${category}</th></tr>`;
+    table.appendChild(thead);
+    let tbody = document.createElement('tbody');
+    combinedData[category].forEach(spot => {
+      let row = document.createElement('tr');
+      row.innerHTML = `<td>${spot.name || spot}</td><td>${spot.address || ''}</td><td>${spot.city || ''}</td><td>${spot.state || ''}</td><td>${spot.status || ''}</td><td>${spot.notes || ''}</td>`;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    tableContainer.appendChild(table);
+  }
+}
+
+// Load Spots on Page Load
+document.addEventListener('DOMContentLoaded', loadSpots);
