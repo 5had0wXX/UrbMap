@@ -2,6 +2,7 @@
 
 body {
   background-color: #f7f7f7;
+  font-family: 'Roboto', sans-serif;
 }
 
 h1 {
@@ -10,4 +11,12 @@ h1 {
 
 table {
   margin-top: 20px;
+}
+
+header .logo {
+  width: 100px; /* Adjust the width as needed */
+  height: auto;
+  position: absolute;
+  top: 20px; /* Adjust the top position as needed */
+  left: 20px; /* Adjust the left position as needed */
 }
