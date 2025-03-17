@@ -458,3 +458,75 @@ function generateTable(categoryData) {
   tableHTML += `</tbody></table>`;
   return tableHTML;
 }
+
+// Hardcoded passcode
+const PASSCODE = "trenton";
+
+// DOM Elements
+const loginForm = document.getElementById('loginForm');
+const passcodeInput = document.getElementById('passcodeInput');
+const loginButton = document.getElementById('loginButton');
+const addSpotForm = document.getElementById('addSpotForm');
+const categorySelect = document.getElementById('categorySelect');
+const spotInput = document.getElementById('spotInput');
+const addSpotButton = document.getElementById('addSpotButton');
+const tableContainer = document.getElementById('tableContainer');
+
+// Event Listener for Login Button
+loginButton.addEventListener('click', () => {
+  const passcode = passcodeInput.value;
+  if (passcode === PASSCODE) {
+    loginForm.style.display = 'none';
+    addSpotForm.style.display = 'block';
+    loadSpots();
+  } else {
+    alert('Incorrect passcode');
+  }
+});
+
+// Event Listener for Add Spot Button
+addSpotButton.addEventListener('click', () => {
+  const category = categorySelect.value;
+  const spot = spotInput.value;
+  if (category && spot) {
+    addSpot(category, spot);
+    spotInput.value = '';
+  } else {
+    alert('Please select a category and enter a spot');
+  }
+});
+
+// Function to Add Spot to Local Storage
+function addSpot(category, spot) {
+  let spots = JSON.parse(localStorage.getItem('spots')) || {};
+  if (!spots[category]) {
+    spots[category] = [];
+  }
+  spots[category].push(spot);
+  localStorage.setItem('spots', JSON.stringify(spots));
+  loadSpots();
+}
+
+// Function to Load Spots from Local Storage
+function loadSpots() {
+  let spots = JSON.parse(localStorage.getItem('spots')) || {};
+  tableContainer.innerHTML = '';
+  for (let category in spots) {
+    let table = document.createElement('table');
+    table.className = 'table';
+    let thead = document.createElement('thead');
+    thead.innerHTML = `<tr><th>${category}</th></tr>`;
+    table.appendChild(thead);
+    let tbody = document.createElement('tbody');
+    spots[category].forEach(spot => {
+      let row = document.createElement('tr');
+      row.innerHTML = `<td>${spot}</td>`;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    tableContainer.appendChild(table);
+  }
+}
+
+// Load Spots on Page Load
+document.addEventListener('DOMContentLoaded', loadSpots);
