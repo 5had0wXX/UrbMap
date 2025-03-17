@@ -452,8 +452,7 @@ function generateTable(categoryData) {
       <td>${item.city}</td>
       <td>${item.state}</td>
       <td>${item.status}</td>
-      <td>${item.notes}</td>
-    </tr>`;
+      <td>${item.notes}</td>`;
   });
   
   tableHTML += `</tbody></table>`;
@@ -505,33 +504,4 @@ addSpotButton.addEventListener('click', () => {
 function addSpot(category, spot) {
   let spots = JSON.parse(localStorage.getItem('spots')) || {};
   if (!spots[category]) {
-    spots[category] = [];
-  }
-  spots[category].push(spot);
-  localStorage.setItem('spots', JSON.stringify(spots));
-  loadSpots();
-}
-
-// Function to Load Spots from Local Storage
-function loadSpots() {
-  let spots = JSON.parse(localStorage.getItem('spots')) || {};
-  tableContainer.innerHTML = '';
-  for (let category in spots) {
-    let table = document.createElement('table');
-    table.className = 'table';
-    let thead = document.createElement('thead');
-    thead.innerHTML = `<tr><th>${category}</th></tr>`;
-    table.appendChild(thead);
-    let tbody = document.createElement('tbody');
-    spots[category].forEach(spot => {
-      let row = document.createElement('tr');
-      row.innerHTML = `<td>${spot}</td>`;
-      tbody.appendChild(row);
-    });
-    table.appendChild(tbody);
-    tableContainer.appendChild(table);
-  }
-}
-
-// Load Spots on Page Load
-document.addEventListener('DOMContentLoaded', loadSpots);
+    spots[category] =
