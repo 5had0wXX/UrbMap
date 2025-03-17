@@ -507,7 +507,7 @@ function addSpot(category, spot) {
   if (!spots[category]) {
     spots[category] = [];
   }
-  spots[category].push(spot);
+  spots[category].push({ name: spot }); // Ensure consistent structure
   localStorage.setItem('spots', JSON.stringify(spots));
   loadSpots();
 }
@@ -543,3 +543,80 @@ function loadSpots() {
 
 // Load Spots on Page Load
 document.addEventListener('DOMContentLoaded', loadSpots);
+Updated style.css to Restore Original Background Color
+CSS
+/* css/style.css */
+
+body {
+  background-color: #f7f7f7; /* Original background color */
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-family: 'Bubblegum Sans', cursive; /* Use a bubble letters font */
+  font-weight: 700; /* Make the text bold */
+  margin-left: 120px; /* Add margin to prevent overlap with logo */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+  color: black; /* Change text color to black */
+  animation: bounceIn 1s ease-in-out; /* Bounce only on load */
+}
+
+/* Keyframes for bounce animation */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0.7;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+table {
+  margin-top: 20px;
+}
+
+header .logo {
+  width: 100px; /* Adjust the width as needed */
+  height: auto;
+  position: absolute;
+  top: 20px; /* Adjust the top position as needed */
+  left: 20px; /* Adjust the left position as needed */
+}
+
+/* Position the login button and form in the bottom left corner */
+.tiny-login {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 100px; /* Tiny width */
+  font-size: 10px; /* Small font size */
+}
+
+#loginForm {
+  position: fixed;
+  bottom: 60px; /* Above the login button */
+  left: 20px;
+  width: 200px; /* Set a fixed width */
+  background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: none; /* Hide initially */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  h1 {
+    margin-left: 0; /* Remove left margin on mobile */
+    text-align: center; /* Center-align the text on mobile */
+  }
+  header .logo {
+    left: auto; /* Remove left positioning on mobile */
+    right: 20px; /* Position the logo to the right on mobile */
+  }
+}
