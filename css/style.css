@@ -29,8 +29,7 @@ header .logo {
     text-align: center; /* Center-align the text on mobile */
   }
   header .logo {
-    position: static; /* Remove absolute positioning on mobile */
-    display: block; /* Make sure the logo is displayed as a block */
-    margin: 0 auto 20px; /* Center the logo and add bottom margin */
+    left: auto; /* Remove left positioning on mobile */
+    right: 20px; /* Position the logo to the right on mobile */
   }
 }
