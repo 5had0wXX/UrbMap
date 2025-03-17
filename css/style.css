@@ -7,7 +7,12 @@ body {
 
 h1 {
   font-family: 'Roboto', sans-serif;
+  font-weight: 700; /* Make the text bold */
   margin-left: 120px; /* Add margin to prevent overlap with logo */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+  background: linear-gradient(90deg, rgba(255,0,150,1) 0%, rgba(0,204,255,1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 table {
@@ -31,5 +36,4 @@ header .logo {
   header .logo {
     left: auto; /* Remove left positioning on mobile */
     right: 20px; /* Position the logo to the right on mobile */
-  }
-}
+  ▋
