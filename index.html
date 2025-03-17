@@ -21,8 +21,15 @@
   <div class="container mt-4">
     <h1 class="animate__animated animate__bounce">Property Explorer</h1>
     
-    <!-- Dropdown Menu -->
-    <div class="mb-3">
+    <!-- Login Form -->
+    <div id="loginForm" class="mb-3">
+      <label for="passcodeInput" class="form-label">Enter Passcode:</label>
+      <input type="password" id="passcodeInput" class="form-control" />
+      <button id="loginButton" class="btn btn-primary mt-2">Login</button>
+    </div>
+
+    <!-- Add Spot Form (Hidden Initially) -->
+    <div id="addSpotForm" class="mb-3" style="display: none;">
       <label for="categorySelect" class="form-label">Select a Property Category:</label>
       <select id="categorySelect" class="form-select">
         <option value="">-- Choose a Category --</option>
@@ -32,6 +39,9 @@
         <option value="hospitality">Hospitality</option>
         <option value="government">Government/Institutional</option>
       </select>
+      <label for="spotInput" class="form-label mt-2">Add Spot:</label>
+      <input type="text" id="spotInput" class="form-control" />
+      <button id="addSpotButton" class="btn btn-primary mt-2">Add Spot</button>
     </div>
 
     <!-- Container for Dynamic Table -->
