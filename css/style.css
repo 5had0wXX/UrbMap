@@ -37,6 +37,18 @@ header .logo {
   left: 20px; /* Adjust the left position as needed */
 }
 
+/* Position the login form in the bottom left corner */
+#loginForm {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 200px; /* Set a fixed width */
+  background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
 /* Media query for mobile devices */
 @media (max-width: 768px) {
   h1 {
