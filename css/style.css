@@ -7,6 +7,7 @@ body {
 
 h1 {
   font-family: 'Roboto', sans-serif;
+  margin-left: 120px; /* Add margin to prevent overlap with logo */
 }
 
 table {
@@ -19,4 +20,17 @@ header .logo {
   position: absolute;
   top: 20px; /* Adjust the top position as needed */
   left: 20px; /* Adjust the left position as needed */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  h1 {
+    margin-left: 0; /* Remove left margin on mobile */
+    text-align: center; /* Center-align the text on mobile */
+  }
+  header .logo {
+    position: static; /* Remove absolute positioning on mobile */
+    display: block; /* Make sure the logo is displayed as a block */
+    margin: 0 auto 20px; /* Center the logo and add bottom margin */
+  }
 }
