@@ -501,3 +501,37 @@ function loadSpots() {
     console.error('Error loading spots:', error);
   }
 }
+// Function to fetch and display data from spots.json
+  fetch('spots.json')
+    .then(response => response.json())
+    .then(data => {
+      // Process and display data
+      console.log(data);
+      // You can add code here to display the data on your webpage
+      displaySpots(data);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+});
+
+// Function to display spots (you can customize this function based on your needs)
+function displaySpots(data) {
+  const tableContainer = document.getElementById('tableContainer');
+  tableContainer.innerHTML = ''; // Clear the table container
+  for (let category in data) {
+    if (data[category].length > 0) {
+      let table = document.createElement('table');
+      table.className = 'styled-table';
+      let thead = document.createElement('thead');
+      thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+      table.appendChild(thead);
+      let tbody = document.createElement('tbody');
+      data[category].forEach(spot => {
+        let row = document.createElement('tr');
+        row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+        tbody.appendChild(row);
+      });
+      table.appendChild(tbody);
+      tableContainer.appendChild(table);
+    }
+  }
+}
