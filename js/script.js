@@ -387,6 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addSpotButton = document.getElementById('addSpotButton');
     const tableContainer = document.getElementById('tableContainer');
     const addCategorySelect = document.getElementById('addCategorySelect');
+    const searchButton = document.getElementById('searchButton');
 
     loginButton.addEventListener('click', () => {
         loginForm.style.display = 'block';
@@ -425,7 +426,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    categorySelect.addEventListener('change', () => {
+    // Use search button to switch categories and load spots
+    searchButton.addEventListener('click', () => {
         tableContainer.style.display = 'block';
         loadSpots();
     });
