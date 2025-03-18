@@ -366,6 +366,7 @@ const data = {
 
 // When the DOM is ready, set up the dropdown event.
 document.addEventListener("DOMContentLoaded", () => {
+  loginButton.addEventListener('click', () => {
   populateCategorySelect();
   loadSpots(); // Load spots for all visitors
   const loginButton = document.getElementById('loginButton');
@@ -445,34 +446,42 @@ function addSpot(category, spot) {
   loadSpots();
 }
 
-// Function to Load Spots from Local Storage
+// Function to Load Spots from Local Storage with detailed logging
 function loadSpots() {
-  let spots = JSON.parse(localStorage.getItem('spots')) || {};
-  const tableContainer = document.getElementById('tableContainer');
-  tableContainer.innerHTML = '';
-  const selectedCategory = document.getElementById('categorySelect').value;
-  // Combine data from both the hardcoded data and local storage
-  let combinedData = { ...data };
-  for (let category in spots) {
-    if (!combinedData[category]) {
-      combinedData[category] = [];
+  try {
+    let spots = JSON.parse(localStorage.getItem('spots')) || {};
+    const tableContainer = document.getElementById('tableContainer');
+    tableContainer.innerHTML = '';
+    const selectedCategory = document.getElementById('categorySelect').value;
+    // Combine data from both the hardcoded data and local storage
+    let combinedData = { ...data };
+    console.log('Initial combinedData:', combinedData);
+    for (let category in spots) {
+      if (!combinedData[category]) {
+        combinedData[category] = [];
+      }
+      combinedData[category] = combinedData[category].concat(spots[category]);
+      console.log(`Combined data for category ${category}:`, combinedData[category]);
     }
-    combinedData[category] = combinedData[category].concat(spots[category]);
-  }
-  if (combinedData[selectedCategory] && combinedData[selectedCategory].length > 0) {
-    let table = document.createElement('table');
-    table.className = 'table';
-    let thead = document.createElement('thead');
-    thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
-    table.appendChild(thead);
-    let tbody = document.createElement('tbody');
-    combinedData[selectedCategory].forEach(spot => {
-      let row = document.createElement('tr');
-      row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
-      tbody.appendChild(row);
-    });
-    table.appendChild(tbody);
-    tableContainer.appendChild(table);
+    if (combinedData[selectedCategory] && combinedData[selectedCategory].length > 0) {
+      let table = document.createElement('table');
+      table.className = 'table';
+      let thead = document.createElement('thead');
+      thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+      table.appendChild(thead);
+      let tbody = document.createElement('tbody');
+      combinedData[selectedCategory].forEach(spot => {
+        let row = document.createElement('tr');
+        row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+        tbody.appendChild(row);
+      });
+      table.appendChild(tbody);
+      tableContainer.appendChild(table);
+    } else {
+      console.log('No data available for selected category:', selectedCategory);
+    }
+  } catch (error) {
+    console.error('Error loading spots:', error);
   }
 }
 
