@@ -408,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
       status: statusInput.value,
       notes: notesInput.value
     };
-    if (category && spot.name) {
+    if (category && spot.name && spot.address && spot.city && spot.state && spot.status && spot.notes) {
       addSpot(category, spot);
       spotInput.value = '';
       addressInput.value = '';
@@ -464,7 +464,7 @@ function loadSpots() {
   try {
     let spots = JSON.parse(localStorage.getItem('spots')) || {};
     const tableContainer = document.getElementById('tableContainer');
-    tableContainer.innerHTML = '';
+    tableContainer.innerHTML = ''; // Clear the table container
     const selectedCategory = document.getElementById('categorySelect').value;
     if (!selectedCategory) {
       alert('Please select a category');
