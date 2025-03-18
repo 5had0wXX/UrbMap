@@ -4,12 +4,12 @@ const data = {
     {
       name: "Vibra Healthcare",
       address: "1414 State Street",
-      city: "Hartford",
-      state: "CT",
+      city: "Springfield",
+      state: "MA",
       status: "For Sale / Abandoned",
       notes: "Urban exploration reports; verify latest status."
     },
-    // Existing entries...
+    // Existing entries..
     {
       name: "Mercy Hospital",
       address: "200 Mercy Lane",
@@ -371,6 +371,7 @@ const data = {
 
 // When the DOM is ready, set up the dropdown event.
 document.addEventListener("DOMContentLoaded", () => {
+  populateCategorySelect();
   loadSpots(); // Load spots for all visitors
   const loginButton = document.getElementById('loginButton');
   const loginForm = document.getElementById('loginForm');
@@ -378,6 +379,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const categorySelect = document.getElementById('categorySelect');
   const addSpotForm = document.getElementById('addSpotForm');
   const spotInput = document.getElementById('spotInput');
+  const addressInput = document.getElementById('addressInput');
+  const cityInput = document.getElementById('cityInput');
+  const stateInput = document.getElementById('stateInput');
+  const statusInput = document.getElementById('statusInput');
+  const notesInput = document.getElementById('notesInput');
   const addSpotButton = document.getElementById('addSpotButton');
 
   loginButton.addEventListener('click', () => {
@@ -396,15 +402,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addSpotButton.addEventListener('click', () => {
     const category = categorySelect.value;
-    const spot = spotInput.value;
-    if (category && spot) {
+    const spot = {
+      name: spotInput.value,
+      address: addressInput.value,
+      city: cityInput.value,
+      state: stateInput.value,
+      status: statusInput.value,
+      notes: notesInput.value
+    };
+    if (category && spot.name) {
       addSpot(category, spot);
       spotInput.value = '';
+      addressInput.value = '';
+      cityInput.value = '';
+      stateInput.value = '';
+      statusInput.value = '';
+      notesInput.value = '';
     } else {
-      alert('Please select a category and enter a spot');
+      alert('Please fill in all required fields');
     }
   });
+
+  categorySelect.addEventListener('change', () => {
+    loadSpots();
+  });
 });
+
+// Function to populate category select dropdown
+function populateCategorySelect() {
+  const categorySelect = document.getElementById('categorySelect');
+  for (let category in data) {
+    let option = document.createElement('option');
+    option.value = category;
+    option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    categorySelect.appendChild(option);
+  }
+}
 
 // Function to Add Spot to Local Storage
 function addSpot(category, spot) {
@@ -412,7 +445,7 @@ function addSpot(category, spot) {
   if (!spots[category]) {
     spots[category] = [];
   }
-  spots[category].push({ name: spot }); // Ensure consistent structure
+  spots[category].push(spot); // Ensure consistent structure
   localStorage.setItem('spots', JSON.stringify(spots));
   loadSpots();
 }
@@ -422,6 +455,7 @@ function loadSpots() {
   let spots = JSON.parse(localStorage.getItem('spots')) || {};
   const tableContainer = document.getElementById('tableContainer');
   tableContainer.innerHTML = '';
+  const selectedCategory = document.getElementById('categorySelect').value;
   // Combine data from both the hardcoded data and local storage
   let combinedData = { ...data };
   for (let category in spots) {
@@ -430,22 +464,20 @@ function loadSpots() {
     }
     combinedData[category] = combinedData[category].concat(spots[category]);
   }
-  for (let category in combinedData) {
-    if (combinedData[category].length > 0) {
-      let table = document.createElement('table');
-      table.className = 'table';
-      let thead = document.createElement('thead');
-      thead.innerHTML = `<tr><th>${category}</th></tr>`;
-      table.appendChild(thead);
-      let tbody = document.createElement('tbody');
-      combinedData[category].forEach(spot => {
-        let row = document.createElement('tr');
-        row.innerHTML = `<td>${spot.name || spot}</td><td>${spot.address || ''}</td><td>${spot.city || ''}</td><td>${spot.state || ''}</td><td>${spot.status || ''}</td><td>${spot.notes || ''}</td>`;
-        tbody.appendChild(row);
-      });
-      table.appendChild(tbody);
-      tableContainer.appendChild(table);
-    }
+  if (combinedData[selectedCategory] && combinedData[selectedCategory].length > 0) {
+    let table = document.createElement('table');
+    table.className = 'table';
+    let thead = document.createElement('thead');
+    thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+    table.appendChild(thead);
+    let tbody = document.createElement('tbody');
+    combinedData[selectedCategory].forEach(spot => {
+      let row = document.createElement('tr');
+      row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    tableContainer.appendChild(table);
   }
 }
 
