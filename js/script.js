@@ -501,4 +501,3 @@ async function loadSpots() {
 }
 
 // Load Spots on Page Load
-document.addEventListener('DOMContentLoaded', loadSpots);
