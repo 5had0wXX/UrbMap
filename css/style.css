@@ -1,6 +1,6 @@
 body {
     font-family: 'Comic Sans MS', Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #fafafa; /* Updated background color */
     margin: 0;
     padding: 0;
     position: relative; /* Ensure the body is positioned relatively */
