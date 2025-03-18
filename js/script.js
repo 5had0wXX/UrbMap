@@ -369,13 +369,11 @@ document.addEventListener("DOMContentLoaded", () => {
   populateCategorySelect();
   populateCategorySelectForm();
 
-  // Load spots for the initially selected category
-  loadSpots();
-
   const loginButton = document.getElementById('loginButton');
   const loginForm = document.getElementById('loginForm');
   const submitLoginButton = document.getElementById('submitLoginButton');
   const categorySelect = document.getElementById('categorySelect');
+  const searchButton = document.getElementById('searchButton');
   const categorySelectForm = document.getElementById('categorySelectForm');
   const addSpotForm = document.getElementById('addSpotForm');
   const spotInput = document.getElementById('spotInput');
@@ -423,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  categorySelect.addEventListener('change', () => {
+  searchButton.addEventListener('click', () => {
     loadSpots();
   });
 });
@@ -468,6 +466,10 @@ function loadSpots() {
     const tableContainer = document.getElementById('tableContainer');
     tableContainer.innerHTML = '';
     const selectedCategory = document.getElementById('categorySelect').value;
+    if (!selectedCategory) {
+      alert('Please select a category');
+      return;
+    }
     // Combine data from both the hardcoded data and local storage
     let combinedData = { ...data };
     console.log('Initial combinedData:', combinedData);
@@ -480,7 +482,7 @@ function loadSpots() {
     }
     if (combinedData[selectedCategory] && combinedData[selectedCategory].length > 0) {
       let table = document.createElement('table');
-      table.className = 'table';
+      table.className = 'styled-table';
       let thead = document.createElement('thead');
       thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
       table.appendChild(thead);
@@ -499,6 +501,3 @@ function loadSpots() {
     console.error('Error loading spots:', error);
   }
 }
-
-// Load Spots on Page Load
-document.addEventListener('DOMContentLoaded', loadSpots);
