@@ -367,6 +367,7 @@ const data = {
 document.addEventListener("DOMContentLoaded", () => {
   // Populate the dropdown for selecting property type
   populateCategorySelect();
+  populateCategorySelectForm();
 
   // Load spots for the initially selected category
   loadSpots();
@@ -375,6 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById('loginForm');
   const submitLoginButton = document.getElementById('submitLoginButton');
   const categorySelect = document.getElementById('categorySelect');
+  const categorySelectForm = document.getElementById('categorySelectForm');
   const addSpotForm = document.getElementById('addSpotForm');
   const spotInput = document.getElementById('spotInput');
   const addressInput = document.getElementById('addressInput');
@@ -399,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   addSpotButton.addEventListener('click', () => {
-    const category = categorySelect.value;
+    const category = categorySelectForm.value;
     const spot = {
       name: spotInput.value,
       address: addressInput.value,
@@ -434,6 +436,17 @@ function populateCategorySelect() {
     option.value = category;
     option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
     categorySelect.appendChild(option);
+  }
+}
+
+// Function to populate category select for add spot form
+function populateCategorySelectForm() {
+  const categorySelectForm = document.getElementById('categorySelectForm');
+  for (let category in data) {
+    let option = document.createElement('option');
+    option.value = category;
+    option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    categorySelectForm.appendChild(option);
   }
 }
 
