@@ -1,36 +1,41 @@
-/* Sample CSS for styling the table and form */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
     text-align: center;
+    margin-top: 20px;
+    font-family: 'Verdana', sans-serif;
 }
 
-#tableContainer {
-    margin-top: 20px;
-    width: 100%;
+div {
     display: flex;
     justify-content: center;
+    margin: 20px;
 }
 
-table {
-    width: 80%;
-    border-collapse: collapse;
-    margin: 20px 0;
+button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-table, th, td {
-    border: 1px solid black;
+button:hover {
+    background-color: #45a049;
 }
 
-th, td {
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: #f2f2f2;
+input, select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin: 5px 0;
 }
 
 form {
@@ -40,6 +45,39 @@ form {
     margin-top: 20px;
 }
 
-form input, form select, form button {
-    margin: 5px;
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: 'Trebuchet MS', sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
 }
