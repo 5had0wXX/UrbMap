@@ -372,6 +372,7 @@ const data = {
 // When the DOM is ready, set up the dropdown event.
 document.addEventListener("DOMContentLoaded", () => {
     populateCategorySelect();
+    populateAddCategorySelect();
     const loginButton = document.getElementById('loginButton');
     const loginForm = document.getElementById('loginForm');
     const submitLoginButton = document.getElementById('submitLoginButton');
@@ -385,6 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const notesInput = document.getElementById('notesInput');
     const addSpotButton = document.getElementById('addSpotButton');
     const tableContainer = document.getElementById('tableContainer');
+    const addCategorySelect = document.getElementById('addCategorySelect');
 
     loginButton.addEventListener('click', () => {
         loginForm.style.display = 'block';
@@ -401,7 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     addSpotButton.addEventListener('click', () => {
-        const category = categorySelect.value;
+        const category = addCategorySelect.value;
         const spot = {
             name: spotInput.value,
             address: addressInput.value,
@@ -440,45 +442,59 @@ function populateCategorySelect() {
     }
 }
 
-// Function to Add Spot to Local Storage
-function addSpot(category, spot) {
-    let spots = JSON.parse(localStorage.getItem('spots')) || {};
-    if (!spots[category]) {
-        spots[category] = [];
+// Function to populate add category select dropdown
+function populateAddCategorySelect() {
+    const addCategorySelect = document.getElementById('addCategorySelect');
+    for (let category in data) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        addCategorySelect.appendChild(option);
     }
-    spots[category].push(spot); // Ensure consistent structure
-    localStorage.setItem('spots', JSON.stringify(spots));
-    loadSpots();
 }
 
-// Function to Load Spots from Local Storage
-function loadSpots() {
-    let spots = JSON.parse(localStorage.getItem('spots')) || {};
-    const tableContainer = document.getElementById('tableContainer');
-    tableContainer.innerHTML = '';
-    const selectedCategory = document.getElementById('categorySelect').value;
-    // Combine data from both the hardcoded data and local storage
-    let combinedData = { ...data };
-    for (let category in spots) {
-        if (!combinedData[category]) {
-            combinedData[category] = [];
-        }
-        combinedData[category] = combinedData[category].concat(spots[category]);
+// Function to Add Spot to Shared Database
+async function addSpot(category, spot) {
+    // Replace with your actual database API endpoint
+    const response = await fetch('https://your-database-api-endpoint.com/addSpot', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ category, spot })
+    });
+    if (response.ok) {
+        loadSpots();
+    } else {
+        alert('Failed to add spot. Please try again.');
     }
-    if (combinedData[selectedCategory] && combinedData[selectedCategory].length > 0) {
-        let table = document.createElement('table');
-        table.className = 'table';
-        let thead = document.createElement('thead');
-        thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
-        table.appendChild(thead);
-        let tbody = document.createElement('tbody');
-        combinedData[selectedCategory].forEach(spot => {
-            let row = document.createElement('tr');
-            row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
-            tbody.appendChild(row);
-        });
-        table.appendChild(tbody);
-        tableContainer.appendChild(table);
+}
+
+// Function to Load Spots from Shared Database
+async function loadSpots() {
+    const response = await fetch('https://your-database-api-endpoint.com/getSpots');
+    if (response.ok) {
+        const spots = await response.json();
+        const tableContainer = document.getElementById('tableContainer');
+        tableContainer.innerHTML = '';
+        const selectedCategory = document.getElementById('categorySelect').value;
+        if (spots[selectedCategory] && spots[selectedCategory].length > 0) {
+            let table = document.createElement('table');
+            table.className = 'table';
+            let thead = document.createElement('thead');
+            thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+            table.appendChild(thead);
+            let tbody = document.createElement('tbody');
+            spots[selectedCategory].forEach(spot => {
+                let row = document.createElement('tr');
+                row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+        }
+    } else {
+        alert('Failed to load spots. Please try again.');
     }
 }
 
