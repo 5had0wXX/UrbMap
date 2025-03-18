@@ -1,75 +1,45 @@
-/* css/style.css */
-
+/* Sample CSS for styling the table and form */
 body {
-  background-color: #ffffff; /* Changed background color to white */
-  font-family: 'Roboto', sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 h1 {
-  font-family: 'Bubblegum Sans', cursive; /* Use a bubble letters font */
-  font-weight: 700; /* Make the text bold */
-  margin-left: 120px; /* Add margin to prevent overlap with logo */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add shadow effect */
-  color: black; /* Change text color to black */
-  animation: bounceIn 1s ease-in-out; /* Bounce only on load */
+    text-align: center;
 }
 
-/* Keyframes for bounce animation */
-@keyframes bounceIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0.7;
-  }
-  60% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
+#tableContainer {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 table {
-  margin-top: 20px;
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px 0;
 }
 
-header .logo {
-  width: 100px; /* Adjust the width as needed */
-  height: auto;
-  position: absolute;
-  top: 20px; /* Adjust the top position as needed */
-  left: 20px; /* Adjust the left position as needed */
+table, th, td {
+    border: 1px solid black;
 }
 
-/* Position the login button and form in the bottom left corner */
-.tiny-login {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 100px; /* Tiny width */
-  font-size: 10px; /* Small font size */
+th, td {
+    padding: 8px;
+    text-align: left;
 }
 
-#loginForm {
-  position: fixed;
-  bottom: 60px; /* Above the login button */
-  left: 20px;
-  width: 200px; /* Set a fixed width */
-  background: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  display: none; /* Hide initially */
+th {
+    background-color: #f2f2f2;
 }
 
-/* Media query for mobile devices */
-@media (max-width: 768px) {
-  h1 {
-    margin-left: 0; /* Remove left margin on mobile */
-    text-align: center; /* Center-align the text on mobile */
-  }
-  header .logo {
-    left: auto; /* Remove left positioning on mobile */
-    right: 20px; /* Position the logo to the right on mobile */
-  }
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+form input, form select, form button {
+    margin: 5px;
 }
