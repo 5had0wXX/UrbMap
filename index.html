@@ -13,11 +13,13 @@
     <!-- Dropdown for selecting property type -->
     <div>
         <label for="categorySelect">Select Property Type:</label>
-        <select id="categorySelect"></select>
+        <select id="categorySelect">
+            <option value="" disabled selected>Select a category</option>
+        </select>
     </div>
     
     <!-- Table container to display spots -->
-    <div id="tableContainer"></div>
+    <div id="tableContainer" style="display: none;"></div>
     
     <!-- Login button and form -->
     <button id="loginButton">Login</button>
