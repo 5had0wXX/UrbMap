@@ -364,11 +364,13 @@ const data = {
   ]
 };
 
-// When the DOM is ready, set up the dropdown event.
 document.addEventListener("DOMContentLoaded", () => {
-  loginButton.addEventListener('click', () => {
+  // Populate the dropdown for selecting property type
   populateCategorySelect();
-  loadSpots(); // Load spots for all visitors
+
+  // Load spots for the initially selected category
+  loadSpots();
+
   const loginButton = document.getElementById('loginButton');
   const loginForm = document.getElementById('loginForm');
   const submitLoginButton = document.getElementById('submitLoginButton');
