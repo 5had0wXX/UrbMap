@@ -420,12 +420,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Use search button to switch categories and load spots
     searchButton.addEventListener('click', () => {
+        console.log("Search button clicked");
         tableContainer.style.display = 'block';
         loadSpots();
     });
 });
 
+// Function to populate category select dropdown
 function populateCategorySelect() {
     const categorySelect = document.getElementById('categorySelect');
     for (let category in data) {
@@ -436,6 +439,7 @@ function populateCategorySelect() {
     }
 }
 
+// Function to populate add category select dropdown
 function populateAddCategorySelect() {
     const addCategorySelect = document.getElementById('addCategorySelect');
     for (let category in data) {
@@ -446,48 +450,68 @@ function populateAddCategorySelect() {
     }
 }
 
+// Function to Add Spot to Shared Database
 async function addSpot(category, spot) {
-    const response = await fetch('https://your-database-api-endpoint.com/addSpot', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ category, spot })
-    });
-    if (response.ok) {
-        loadSpots();
-    } else {
-        alert('Failed to add spot. Please try again.');
-    }
-}
-
-async function loadSpots() {
-    const response = await fetch('https://your-database-api-endpoint.com/getSpots');
-    if (response.ok) {
-        const spots = await response.json();
-        const tableContainer = document.getElementById('tableContainer');
-        tableContainer.innerHTML = '';
-        const selectedCategory = document.getElementById('categorySelect').value;
-        if (spots[selectedCategory] && spots[selectedCategory].length > 0) {
-            let table = document.createElement('table');
-            table.className = 'table';
-            let thead = document.createElement('thead');
-            thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
-            table.appendChild(thead);
-            let tbody = document.createElement('tbody');
-            spots[selectedCategory].forEach(spot => {
-                let row = document.createElement('tr');
-                row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
-                tbody.appendChild(row);
-            });
-            table.appendChild(tbody);
-            tableContainer.appendChild(table);
+    try {
+        // Replace with your actual database API endpoint
+        const response = await fetch('https://your-database-api-endpoint.com/addSpot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ category, spot })
+        });
+        if (response.ok) {
+            console.log("Spot added successfully");
+            loadSpots();
         } else {
-            tableContainer.innerHTML = `<p>No spots found for the selected category.</p>`;
+            console.error("Failed to add spot");
+            alert('Failed to add spot. Please try again.');
         }
-    } else {
-        alert('Failed to load spots. Please try again.');
+    } catch (error) {
+        console.error("Error adding spot:", error);
+        alert('An error occurred while adding the spot. Please try again.');
     }
 }
 
+// Function to Load Spots from Shared Database
+async function loadSpots() {
+    try {
+        // Replace with your actual database API endpoint
+        const response = await fetch('https://your-database-api-endpoint.com/getSpots');
+        if (response.ok) {
+            const spots = await response.json();
+            const tableContainer = document.getElementById('tableContainer');
+            tableContainer.innerHTML = '';
+            const selectedCategory = document.getElementById('categorySelect').value;
+            console.log("Selected category:", selectedCategory);
+            console.log("Spots data:", spots);
+            if (spots[selectedCategory] && spots[selectedCategory].length > 0) {
+                let table = document.createElement('table');
+                table.className = 'table';
+                let thead = document.createElement('thead');
+                thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+                table.appendChild(thead);
+                let tbody = document.createElement('tbody');
+                spots[selectedCategory].forEach(spot => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+                tableContainer.appendChild(table);
+            } else {
+                tableContainer.innerHTML = `<p>No spots found for the selected category.</p>`;
+            }
+        } else {
+            console.error("Failed to load spots");
+            alert('Failed to load spots. Please try again.');
+        }
+    } catch (error) {
+        console.error("Error loading spots:", error);
+        alert('An error occurred while loading the spots. Please try again.');
+    }
+}
+
+// Load Spots on Page Load
 document.addEventListener('DOMContentLoaded', loadSpots);
