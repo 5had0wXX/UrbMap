@@ -365,173 +365,129 @@ const data = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Populate the dropdown for selecting property type
-  populateCategorySelect();
-  populateCategorySelectForm();
-
-  const loginButton = document.getElementById('loginButton');
-  const loginForm = document.getElementById('loginForm');
-  const submitLoginButton = document.getElementById('submitLoginButton');
-  const categorySelect = document.getElementById('categorySelect');
-  const searchButton = document.getElementById('searchButton');
-  const categorySelectForm = document.getElementById('categorySelectForm');
-  const addSpotForm = document.getElementById('addSpotForm');
-  const spotInput = document.getElementById('spotInput');
-  const addressInput = document.getElementById('addressInput');
-  const cityInput = document.getElementById('cityInput');
-  const stateInput = document.getElementById('stateInput');
-  const statusInput = document.getElementById('statusInput');
-  const notesInput = document.getElementById('notesInput');
-  const addSpotButton = document.getElementById('addSpotButton');
-
-  loginButton.addEventListener('click', () => {
-    loginForm.style.display = 'block';
-  });
-
-  submitLoginButton.addEventListener('click', () => {
-    const passcode = document.getElementById('passcodeInput').value;
-    if (passcode === 'trenton') {
-      loginForm.style.display = 'none';
-      addSpotForm.style.display = 'block';
-    } else {
-      alert('Incorrect passcode');
-    }
-  });
-
-  addSpotButton.addEventListener('click', () => {
-    const category = categorySelectForm.value;
-    const spot = {
-      name: spotInput.value,
-      address: addressInput.value,
-      city: cityInput.value,
-      state: stateInput.value,
-      status: statusInput.value,
-      notes: notesInput.value
-    };
-    if (category && spot.name && spot.address && spot.city && spot.state && spot.status && spot.notes) {
-      addSpot(category, spot);
-      spotInput.value = '';
-      addressInput.value = '';
-      cityInput.value = '';
-      stateInput.value = '';
-      statusInput.value = '';
-      notesInput.value = '';
-    } else {
-      alert('Please fill in all required fields');
-    }
-  });
-
-  searchButton.addEventListener('click', () => {
-    loadSpots();
-  });
-});
-
-// Function to populate category select dropdown
-function populateCategorySelect() {
-  const categorySelect = document.getElementById('categorySelect');
-  for (let category in data) {
-    let option = document.createElement('option');
-    option.value = category;
-    option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-    categorySelect.appendChild(option);
-  }
-}
-
-// Function to populate category select for add spot form
-function populateCategorySelectForm() {
-  const categorySelectForm = document.getElementById('categorySelectForm');
-  for (let category in data) {
-    let option = document.createElement('option');
-    option.value = category;
-    option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-    categorySelectForm.appendChild(option);
-  }
-}
-
-// Function to Add Spot to Local Storage
-function addSpot(category, spot) {
-  let spots = JSON.parse(localStorage.getItem('spots')) || {};
-  if (!spots[category]) {
-    spots[category] = [];
-  }
-  spots[category].push(spot); // Ensure consistent structure
-  localStorage.setItem('spots', JSON.stringify(spots));
-  loadSpots();
-}
-
-// Function to Load Spots from Local Storage with detailed logging
-function loadSpots() {
-  try {
-    let spots = JSON.parse(localStorage.getItem('spots')) || {};
+    populateCategorySelect();
+    populateAddCategorySelect();
+    const loginButton = document.getElementById('loginButton');
+    const loginForm = document.getElementById('loginForm');
+    const submitLoginButton = document.getElementById('submitLoginButton');
+    const categorySelect = document.getElementById('categorySelect');
+    const addSpotForm = document.getElementById('addSpotForm');
+    const spotInput = document.getElementById('spotInput');
+    const addressInput = document.getElementById('addressInput');
+    const cityInput = document.getElementById('cityInput');
+    const stateInput = document.getElementById('stateInput');
+    const statusInput = document.getElementById('statusInput');
+    const notesInput = document.getElementById('notesInput');
+    const addSpotButton = document.getElementById('addSpotButton');
     const tableContainer = document.getElementById('tableContainer');
-    tableContainer.innerHTML = ''; // Clear the table container
-    const selectedCategory = document.getElementById('categorySelect').value;
-    if (!selectedCategory) {
-      alert('Please select a category');
-      return;
-    }
-    // Combine data from both the hardcoded data and local storage
-    let combinedData = { ...data };
-    console.log('Initial combinedData:', combinedData);
-    for (let category in spots) {
-      if (!combinedData[category]) {
-        combinedData[category] = [];
-      }
-      combinedData[category] = combinedData[category].concat(spots[category]);
-      console.log(`Combined data for category ${category}:`, combinedData[category]);
-    }
-    if (combinedData[selectedCategory] && combinedData[selectedCategory].length > 0) {
-      let table = document.createElement('table');
-      table.className = 'styled-table';
-      let thead = document.createElement('thead');
-      thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
-      table.appendChild(thead);
-      let tbody = document.createElement('tbody');
-      combinedData[selectedCategory].forEach(spot => {
-        let row = document.createElement('tr');
-        row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
-        tbody.appendChild(row);
-      });
-      table.appendChild(tbody);
-      tableContainer.appendChild(table);
-    } else {
-      console.log('No data available for selected category:', selectedCategory);
-    }
-  } catch (error) {
-    console.error('Error loading spots:', error);
-  }
-}
-// Function to fetch and display data from spots.json
-  fetch('spots.json')
-    .then(response => response.json())
-    .then(data => {
-      // Process and display data
-      console.log(data);
-      // You can add code here to display the data on your webpage
-      displaySpots(data);
-    })
-    .catch(error => console.error('Error fetching data:', error));
+    const addCategorySelect = document.getElementById('addCategorySelect');
+    const searchButton = document.getElementById('searchButton');
+
+    loginButton.addEventListener('click', () => {
+        loginForm.style.display = 'block';
+    });
+
+    submitLoginButton.addEventListener('click', () => {
+        const passcode = document.getElementById('passcodeInput').value;
+        if (passcode === 'trenton') {
+            loginForm.style.display = 'none';
+            addSpotForm.style.display = 'block';
+        } else {
+            alert('Incorrect passcode');
+        }
+    });
+
+    addSpotButton.addEventListener('click', () => {
+        const category = addCategorySelect.value;
+        const spot = {
+            name: spotInput.value,
+            address: addressInput.value,
+            city: cityInput.value,
+            state: stateInput.value,
+            status: statusInput.value,
+            notes: notesInput.value
+        };
+        if (category && spot.name) {
+            addSpot(category, spot);
+            spotInput.value = '';
+            addressInput.value = '';
+            cityInput.value = '';
+            stateInput.value = '';
+            statusInput.value = '';
+            notesInput.value = '';
+        } else {
+            alert('Please fill in all required fields');
+        }
+    });
+
+    searchButton.addEventListener('click', () => {
+        tableContainer.style.display = 'block';
+        loadSpots();
+    });
 });
 
-// Function to display spots (you can customize this function based on your needs)
-function displaySpots(data) {
-  const tableContainer = document.getElementById('tableContainer');
-  tableContainer.innerHTML = ''; // Clear the table container
-  for (let category in data) {
-    if (data[category].length > 0) {
-      let table = document.createElement('table');
-      table.className = 'styled-table';
-      let thead = document.createElement('thead');
-      thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
-      table.appendChild(thead);
-      let tbody = document.createElement('tbody');
-      data[category].forEach(spot => {
-        let row = document.createElement('tr');
-        row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
-        tbody.appendChild(row);
-      });
-      table.appendChild(tbody);
-      tableContainer.appendChild(table);
+function populateCategorySelect() {
+    const categorySelect = document.getElementById('categorySelect');
+    for (let category in data) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        categorySelect.appendChild(option);
     }
-  }
 }
+
+function populateAddCategorySelect() {
+    const addCategorySelect = document.getElementById('addCategorySelect');
+    for (let category in data) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        addCategorySelect.appendChild(option);
+    }
+}
+
+async function addSpot(category, spot) {
+    const response = await fetch('https://your-database-api-endpoint.com/addSpot', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ category, spot })
+    });
+    if (response.ok) {
+        loadSpots();
+    } else {
+        alert('Failed to add spot. Please try again.');
+    }
+}
+
+async function loadSpots() {
+    const response = await fetch('https://your-database-api-endpoint.com/getSpots');
+    if (response.ok) {
+        const spots = await response.json();
+        const tableContainer = document.getElementById('tableContainer');
+        tableContainer.innerHTML = '';
+        const selectedCategory = document.getElementById('categorySelect').value;
+        if (spots[selectedCategory] && spots[selectedCategory].length > 0) {
+            let table = document.createElement('table');
+            table.className = 'table';
+            let thead = document.createElement('thead');
+            thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+            table.appendChild(thead);
+            let tbody = document.createElement('tbody');
+            spots[selectedCategory].forEach(spot => {
+                let row = document.createElement('tr');
+                row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            tableContainer.appendChild(table);
+        } else {
+            tableContainer.innerHTML = `<p>No spots found for the selected category.</p>`;
+        }
+    } else {
+        alert('Failed to load spots. Please try again.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadSpots);
