@@ -1,4 +1,123 @@
-// Sample data for each category with at least 10 sample entries.
+document.addEventListener("DOMContentLoaded", () => {
+    populateCategorySelect();
+    populateAddCategorySelect();
+    const loginButton = document.getElementById('loginButton');
+    const loginForm = document.getElementById('loginForm');
+    const submitLoginButton = document.getElementById('submitLoginButton');
+    const categorySelect = document.getElementById('categorySelect');
+    const addSpotForm = document.getElementById('addSpotForm');
+    const spotInput = document.getElementById('spotInput');
+    const addressInput = document.getElementById('addressInput');
+    const cityInput = document.getElementById('cityInput');
+    const stateInput = document.getElementById('stateInput');
+    const statusInput = document.getElementById('statusInput');
+    const notesInput = document.getElementById('notesInput');
+    const addSpotButton = document.getElementById('addSpotButton');
+    const tableContainer = document.getElementById('tableContainer');
+    const addCategorySelect = document.getElementById('addCategorySelect');
+    const searchButton = document.getElementById('searchButton');
+
+    loginButton.addEventListener('click', () => {
+        loginForm.style.display = 'block';
+    });
+
+    submitLoginButton.addEventListener('click', () => {
+        const passcode = document.getElementById('passcodeInput').value;
+        if (passcode === 'trenton') {
+            loginForm.style.display = 'none';
+            addSpotForm.style.display = 'block';
+        } else {
+            alert('Incorrect passcode');
+        }
+    });
+
+    addSpotButton.addEventListener('click', () => {
+        const category = addCategorySelect.value;
+        const spot = {
+            name: spotInput.value,
+            address: addressInput.value,
+            city: cityInput.value,
+            state: stateInput.value,
+            status: statusInput.value,
+            notes: notesInput.value
+        };
+        if (category && spot.name) {
+            addSpot(category, spot);
+            spotInput.value = '';
+            addressInput.value = '';
+            cityInput.value = '';
+            stateInput.value = '';
+            statusInput.value = '';
+            notesInput.value = '';
+        } else {
+            alert('Please fill in all required fields');
+        }
+    });
+
+    searchButton.addEventListener('click', () => {
+        console.log("Search button clicked");
+        tableContainer.style.display = 'block';
+        loadSpots();
+    });
+
+    loadSpots();
+});
+
+function populateCategorySelect() {
+    const categorySelect = document.getElementById('categorySelect');
+    categorySelect.innerHTML = '<option value="" disabled selected>Select a category</option>';
+    for (let category in data) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        categorySelect.appendChild(option);
+    }
+}
+
+function populateAddCategorySelect() {
+    const addCategorySelect = document.getElementById('addCategorySelect');
+    addCategorySelect.innerHTML = '<option value="" disabled selected>Select a category</option>';
+    for (let category in data) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        addCategorySelect.appendChild(option);
+    }
+}
+
+function addSpot(category, spot) {
+    if (!data[category]) {
+        data[category] = [];
+    }
+    data[category].push(spot);
+    console.log("Spot added successfully");
+    loadSpots();
+}
+
+function loadSpots() {
+    const tableContainer = document.getElementById('tableContainer');
+    tableContainer.innerHTML = '';
+    const selectedCategory = document.getElementById('categorySelect').value;
+    console.log("Selected category:", selectedCategory);
+    if (data[selectedCategory] && data[selectedCategory].length > 0) {
+        let table = document.createElement('table');
+        table.className = 'table';
+        let thead = document.createElement('thead');
+        thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
+        table.appendChild(thead);
+        let tbody = document.createElement('tbody');
+        data[selectedCategory].forEach(spot => {
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+        tableContainer.appendChild(table);
+    } else {
+        tableContainer.innerHTML = `<p>No spots found for the selected category.</p>`;
+    }
+}
+
 const data = {
   hospitals: [
     {
@@ -363,110 +482,3 @@ const data = {
     }
   ]
 };
-
-document.getElementById('addressInput');
-    const cityInput = document.getElementById('cityInput');
-    const stateInput = document.getElementById('stateInput');
-    const statusInput = document.getElementById('statusInput');
-    const notesInput = document.getElementById('notesInput');
-    const addSpotButton = document.getElementById('addSpotButton');
-    const tableContainer = document.getElementById('tableContainer');
-    const addCategorySelect = document.getElementById('addCategorySelect');
-    const searchButton = document.getElementById('searchButton');
-
-    loginButton.addEventListener('click', () => {
-        loginForm.style.display = 'block';
-    });
-
-    submitLoginButton.addEventListener('click', () => {
-        const passcode = document.getElementById('passcodeInput').value;
-        if (passcode === 'trenton') {
-            loginForm.style.display = 'none';
-            addSpotForm.style.display = 'block';
-        } else {
-            alert('Incorrect passcode');
-        }
-    });
-
-    addSpotButton.addEventListener('click', () => {
-        const category = addCategorySelect.value;
-        const spot = {
-            name: spotInput.value,
-            address: addressInput.value,
-            city: cityInput.value,
-            state: stateInput.value,
-            status: statusInput.value,
-            notes: notesInput.value
-        };
-        if (category && spot.name) {
-            addSpot(category, spot);
-            spotInput.value = '';
-            addressInput.value = '';
-            cityInput.value = '';
-            stateInput.value = '';
-            statusInput.value = '';
-            notesInput.value = '';
-        } else {
-            alert('Please fill in all required fields');
-        }
-    });
-
-    searchButton.addEventListener('click', () => {
-        console.log("Search button clicked");
-        tableContainer.style.display = 'block';
-        loadSpots();
-    });
-
-    loadSpots();
-});
-
-function populateCategorySelect() {
-    const categorySelect = document.getElementById('categorySelect');
-    for (let category in data) {
-        let option = document.createElement('option');
-        option.value = category;
-        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-        categorySelect.appendChild(option);
-    }
-}
-
-function populateAddCategorySelect() {
-    const addCategorySelect = document.getElementById('addCategorySelect');
-    for (let category in data) {
-        let option = document.createElement('option');
-        option.value = category;
-        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-        addCategorySelect.appendChild(option);
-    }
-}
-
-function addSpot(category, spot) {
-    if (!data[category]) {
-        data[category] = [];
-    }
-    data[category].push(spot);
-    console.log("Spot added successfully");
-    loadSpots();
-}
-
-function loadSpots() {
-    const tableContainer = document.getElementById('tableContainer');
-    tableContainer.innerHTML = '';
-    const selectedCategory = document.getElementById('categorySelect').value;
-    console.log("Selected category:", selectedCategory);
-    if (data[selectedCategory] && data[selectedCategory].length > 0) {
-        let table = document.createElement('table');
-        table.className = 'table';
-        let thead = document.createElement('thead');
-        thead.innerHTML = `<tr><th>Name</th><th>Address</th><th>City</th><th>State</th><th>Status</th><th>Notes</th></tr>`;
-        table.appendChild(thead);
-        let tbody = document.createElement('tbody');
-        data[selectedCategory].forEach(spot => {
-            let row = document.createElement('tr');
-            row.innerHTML = `<td>${spot.name}</td><td>${spot.address}</td><td>${spot.city}</td><td>${spot.state}</td><td>${spot.status}</td><td>${spot.notes}</td>`;
-            tbody.appendChild(row);
-        });
-        table.appendChild(tbody);
-        tableContainer.appendChild(table);
-    } else {
-        tableContainer.innerHTML = `<p>No spots found for the selected category.</p>`
