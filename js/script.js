@@ -118,8 +118,8 @@ function loadSpots() {
     }
 }
 
-const data = {
-  hospitals: [
+const data = {  
+    hospitals: [
     {
       name: "Vibra Healthcare",
       address: "1414 State Street",
