@@ -397,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    addSpotButton.addEventListener('click', () => {
+    addSpotButton.addEventListener('click', async () => {
         const category = addCategorySelect.value;
         const spot = {
             name: spotInput.value,
@@ -408,27 +408,39 @@ document.addEventListener("DOMContentLoaded", () => {
             notes: notesInput.value
         };
         if (category && spot.name) {
-            addSpot(category, spot);
-            spotInput.value = '';
-            addressInput.value = '';
-            cityInput.value = '';
-            stateInput.value = '';
-            statusInput.value = '';
-            notesInput.value = '';
+            try {
+                const response = await fetch('https://your-database-api-endpoint.com/addSpot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ category, spot })
+                });
+                if (response.ok) {
+                    console.log("Spot added successfully");
+                    loadSpots();
+                } else {
+                    console.error("Failed to add spot");
+                    alert('Failed to add spot. Please try again.');
+                }
+            } catch (error) {
+                console.error("Error adding spot:", error);
+                alert('An error occurred while adding the spot. Please try again.');
+            }
         } else {
             alert('Please fill in all required fields');
         }
     });
 
-    // Use search button to switch categories and load spots
     searchButton.addEventListener('click', () => {
         console.log("Search button clicked");
         tableContainer.style.display = 'block';
         loadSpots();
     });
+
+    loadSpots();
 });
 
-// Function to populate category select dropdown
 function populateCategorySelect() {
     const categorySelect = document.getElementById('categorySelect');
     for (let category in data) {
@@ -439,7 +451,6 @@ function populateCategorySelect() {
     }
 }
 
-// Function to populate add category select dropdown
 function populateAddCategorySelect() {
     const addCategorySelect = document.getElementById('addCategorySelect');
     for (let category in data) {
@@ -450,34 +461,8 @@ function populateAddCategorySelect() {
     }
 }
 
-// Function to Add Spot to Shared Database
-async function addSpot(category, spot) {
-    try {
-        // Replace with your actual database API endpoint
-        const response = await fetch('https://your-database-api-endpoint.com/addSpot', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ category, spot })
-        });
-        if (response.ok) {
-            console.log("Spot added successfully");
-            loadSpots();
-        } else {
-            console.error("Failed to add spot");
-            alert('Failed to add spot. Please try again.');
-        }
-    } catch (error) {
-        console.error("Error adding spot:", error);
-        alert('An error occurred while adding the spot. Please try again.');
-    }
-}
-
-// Function to Load Spots from Shared Database
 async function loadSpots() {
     try {
-        // Replace with your actual database API endpoint
         const response = await fetch('https://your-database-api-endpoint.com/getSpots');
         if (response.ok) {
             const spots = await response.json();
@@ -513,5 +498,7 @@ async function loadSpots() {
     }
 }
 
-// Load Spots on Page Load
-document.addEventListener('DOMContentLoaded', loadSpots);
+const data = {
+    // Sample data for each category with at least 10 sample entries.
+    // Add your data here
+};
